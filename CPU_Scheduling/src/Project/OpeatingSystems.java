@@ -39,10 +39,10 @@ public class OpeatingSystems extends javax.swing.JFrame {
         jLabel3 = new javax.swing.JLabel();
         RunAlgorithm = new javax.swing.JButton();
         AddProcessInTable = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
         AlgorithmsList = new javax.swing.JComboBox<>();
         NumberProcess = new javax.swing.JTextField();
         CPUTime = new javax.swing.JTextField();
-        jLabel6 = new javax.swing.JLabel();
         jLabel10 = new javax.swing.JLabel();
         stateofProcess = new javax.swing.JTextField();
         jLabel9 = new javax.swing.JLabel();
@@ -108,6 +108,17 @@ public class OpeatingSystems extends javax.swing.JFrame {
         });
         Left.add(AddProcessInTable, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 260, 340, 36));
 
+        jButton1.setBackground(new java.awt.Color(30, 62, 98));
+        jButton1.setFont(new java.awt.Font("Segoe UI", 2, 24)); // NOI18N
+        jButton1.setForeground(new java.awt.Color(255, 255, 255));
+        jButton1.setText("Clear");
+        jButton1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton1ActionPerformed(evt);
+            }
+        });
+        Left.add(jButton1, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 320, 250, 40));
+
         AlgorithmsList.setBackground(new java.awt.Color(255, 255, 255));
         AlgorithmsList.setFont(new java.awt.Font("Arial", 1, 16)); // NOI18N
         AlgorithmsList.setForeground(new java.awt.Color(0, 0, 0));
@@ -133,11 +144,6 @@ public class OpeatingSystems extends javax.swing.JFrame {
         CPUTime.setForeground(new java.awt.Color(102, 102, 102));
         CPUTime.setBorder(javax.swing.BorderFactory.createCompoundBorder());
         Left.add(CPUTime, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 200, 343, 40));
-
-        jLabel6.setFont(new java.awt.Font("SimSun", 3, 36)); // NOI18N
-        jLabel6.setForeground(new java.awt.Color(255, 255, 255));
-        jLabel6.setText("CPU Scheduling");
-        Left.add(jLabel6, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 10, 288, -1));
 
         jLabel10.setBackground(new java.awt.Color(102, 102, 102));
         jLabel10.setFont(new java.awt.Font("Segoe UI", 2, 18)); // NOI18N
@@ -171,7 +177,7 @@ public class OpeatingSystems extends javax.swing.JFrame {
 
             },
             new String [] {
-                "N.Process", "CPU.T", "Wait.T", "Turn.T"
+                "Number Process", "CPU Time", "Waiting Time", "Turnaround Time"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -207,7 +213,7 @@ public class OpeatingSystems extends javax.swing.JFrame {
         jLabel4.setBackground(new java.awt.Color(0, 0, 0));
         jLabel4.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Icon/WhatsApp Image 2024-12-18 at 21.46.42_815ee746.jpg"))); // NOI18N
         jLabel4.setText("jLabel4");
-        Left.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 930, 650));
+        Left.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, -30, 930, 690));
 
         jLabel8.setFont(new java.awt.Font("SimSun", 3, 36)); // NOI18N
         jLabel8.setForeground(new java.awt.Color(255, 255, 255));
@@ -230,207 +236,6 @@ public class OpeatingSystems extends javax.swing.JFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void RunAlgorithmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RunAlgorithmActionPerformed
-       rowCount = model.getRowCount();
-       ChangeState("Running");
-       
-        int Cputime [] = new int[rowCount];
-        
-        int WaitingTime[]= new int[rowCount];
-        int TrunaroundTime []= new int[rowCount];
-        
-//        ALgorithm FCFS (Motaz Dahy)
-      if(AlgorithmsList.getSelectedItem().equals("FCFS")){
-                 for(int i=0; i< rowCount; i++ ){
-              Cputime[i] = Integer.parseInt(model.getValueAt(i, 1).toString());//Cpu time
-              
-        }
-        WaitingTime[0]=0;
-        for(int i=1;i<rowCount;i++){
-            WaitingTime[i]= WaitingTime[i-1]+Cputime[i-1];
-            
-        }
-        for(int i=0;i<rowCount; i++){
-           TrunaroundTime[i]= WaitingTime[i]+Cputime[i];
-           
-        }
-        SetWaitingAndTrunAroud(WaitingTime,TrunaroundTime);
-        ShowMessageAverageWT("FCFS");
-      }
-      
-      
-//        ALgorithm SJF (Abolyazeed)
-      
-      
-      else if (AlgorithmsList.getSelectedItem().equals("SJF")){ // Short Job Frist 
-           List<Object[]> TableData = new ArrayList<>();
-         
-         for(int i=0; i<rowCount; i++){
-             Object[] row = new Object[4];
-             row[0] = model.getValueAt(i, 0);
-             row[1] = Integer.parseInt(model.getValueAt(i, 1).toString());
-             row[2] = 0;//waiting Time 
-             row[3] = 0; //turnAround Time ;
-             TableData.add(row);
-             
-             
-             
-         }
-//         Sort Based on Cpu Time 
-
-     TableData.sort((a,b) -> Integer.compare((int) a[1], (int)b[1]));
-     
-     
-//     Operation 
-
-
-   int CurrentTime = 0;
-    for(int i=0; i<rowCount; i++){
-       Object[] row = TableData.get(i);
-       int CpuTime = (int) row[1];
-       row[2] = CurrentTime ;
-       row[3] = (int)row[2] + CpuTime;
-       CurrentTime += CpuTime;
-       
-       
-    }
-          
-    
-    
-    SeaderTableData(TableData);
-        ShowMessageAverageWT("SJF");
-      }
-      
-      
-//        ALgorithm Priority (Ahmed Badawi)
-      
-      else if (AlgorithmsList.getSelectedItem().equals("Priority")){
-//          Add Column "Proriy Process "
-      if(model.getColumnCount() == 4){
-                    model.addColumn("Priority.P");
-
-      }
-    
-         for(int i=0 ;i < rowCount; i++){
-             int number = i+1;
-             
-            String InputPriority = JOptionPane.showInputDialog(this, "Enter Number of Priority process"+number+":","Input Priority Process",JOptionPane.QUESTION_MESSAGE);
-            model.setValueAt(InputPriority, i, 4);
-         }
-         
-         
-         List<Object[]> TableData = new ArrayList<>();
-         
-         for (int i=0; i<rowCount; i++){
-             Object[] Process = new Object[5];
-             Process[0] = model.getValueAt(i, 0);
-             Process[1] = Integer.parseInt(model.getValueAt(i, 1).toString());//CPU time
-             Process[2] = 0;
-             Process[3] = 0;
-             Process[4] = Integer.parseInt(model.getValueAt(i, 4).toString()) ;//Priority Process 
-             TableData.add(Process);
-             
-         }
-//         Sorting 
-         TableData.sort((a,b) -> Integer.compare((int) a[4], (int )b[4]));
-         
-         
-         
-//         opertionS
-
-
-         int currentTime = 0;
-         for (int i=0 ;i <rowCount; i++){
-             
-             Object[] Process =TableData.get(i);
-             int CPUTime = (int ) Process[1];
-             Process[2] = currentTime;// Waiting Time 
-             Process[3] = (int)Process[2] + CPUTime;//TrunAround Time 
-             
-             currentTime += CPUTime;
-             
-             
-             
-             
-         }
-          SeaderTableData(TableData);// in Algorithm FJS
-          ShowMessageAverageWT("Priority Algorithm");// in Algorithm FCFS
-          
-    
-      }
-      
-      
-//        ALgorithm Round Robin  (Mahmoued Hazem)
-      
-      else if (AlgorithmsList.getSelectedItem().equals("Round Robin")){
-//          Quyantam Time 
-               String inputQuantam =  JOptionPane.showInputDialog(this,
-                        "Enter Quantam time for all process ",
-                        "Quantam Time ", 
-                        JOptionPane.QUESTION_MESSAGE);
-                QuantamTimeField.setText(inputQuantam);
-                int QuantamTime = Integer.parseInt(inputQuantam);
-                
-                 List<Object[]> tableData = new ArrayList<>();
-                 int [] backupCpuTime = new int[rowCount];
-                 
-                 for (int i=0; i< rowCount; i++){
-                    Object[] process = new Object[4];
-                    
-                    process[0] = model.getValueAt(i, 0);
-                    process[1]= Integer.parseInt(model.getValueAt(i, 1).toString());
-                    backupCpuTime[i] = Integer.parseInt(model.getValueAt(i, 1).toString());//Cpu time of process 
-                    process[2] = 0;
-                    process[3] = 0;
-                    
-                    tableData.add(process);
-                    
-                    
-                 }
-//                 Operations 
-                     boolean allProcessesIscomplete;
-                     int currentTime = 0;
-                     do{
-                         allProcessesIscomplete = true;
-                         for(Object[] process : tableData){
-                             int CPUTime= (int) process[1];
-                             
-                             if(CPUTime > 0 ){
-                                 allProcessesIscomplete = false;
-                                 if(CPUTime > QuantamTime){
-//                                     process is n`t finshed 
-                                        currentTime += QuantamTime;
-                                        process[1] = (int) process[1] - QuantamTime;
-                                        
-                                 }
-                                 else {
-//                                     process is finshed 
-                                          currentTime += CPUTime;
-                                          process[1] = 0;//cpu Time Finshed
-                                          process[3] = currentTime;//trun Around time 
-                                          process[2] = (int) process[3]- CPUTime;
-                                          
-                                          
-                                          
-                                 }
-                             }
-                         }
-//                         opertion 
-                     }while (!allProcessesIscomplete);
-                     for(int i=0 ;i< rowCount;i++){
-                          Object[] process = tableData.get(i);
-                          model.setValueAt(process[0], i, 0);
-                          model.setValueAt(backupCpuTime[i], i, 1);
-                          model.setValueAt(process[2], i, 2);
-                          model.setValueAt(process[3], i, 3);
-                     }
-                     
-                     ShowMessageAverageWT("Round Robin");
-   
-      }             
-        
-    }//GEN-LAST:event_RunAlgorithmActionPerformed
 
     private void AddProcessInTableActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_AddProcessInTableActionPerformed
                 model = (DefaultTableModel) Table.getModel();
@@ -468,6 +273,185 @@ public class OpeatingSystems extends javax.swing.JFrame {
     private void NumberProcessActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_NumberProcessActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_NumberProcessActionPerformed
+
+    private void RunAlgorithmActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_RunAlgorithmActionPerformed
+        rowCount = model.getRowCount();
+        ChangeState("Running");
+
+        int Cputime [] = new int[rowCount];
+
+        int WaitingTime[]= new int[rowCount];
+        int TrunaroundTime []= new int[rowCount];
+
+        //        ALgorithm FCFS (Motaz Dahy)
+        if(AlgorithmsList.getSelectedItem().equals("FCFS")){
+            for(int i=0; i< rowCount; i++ ){
+                Cputime[i] = Integer.parseInt(model.getValueAt(i, 1).toString());
+
+            }
+            WaitingTime[0]=0;
+            for(int i=1;i<rowCount;i++){
+                WaitingTime[i]= WaitingTime[i-1]+Cputime[i-1];
+
+            }
+            for(int i=0;i<rowCount; i++){
+                TrunaroundTime[i]= WaitingTime[i]+Cputime[i];
+
+            }
+            SetWaitingAndTrunAroud(WaitingTime,TrunaroundTime);
+            ShowMessageAverageWT("FCFS");
+        }
+
+        //        ALgorithm SJF (Abolyazeed)
+
+        else if (AlgorithmsList.getSelectedItem().equals("SJF")){ // Short Job Frist
+            List<Object[]> TableData = new ArrayList<>();
+
+            for(int i=0; i<rowCount; i++){
+                Object[] row = new Object[4];
+                row[0] = model.getValueAt(i, 0);
+                row[1] = Integer.parseInt(model.getValueAt(i, 1).toString());
+                row[2] = 0;//waiting Time
+                row[3] = 0; //turnAround Time ;
+                TableData.add(row);
+
+            }
+            //         Sort Based on Cpu Time
+
+            TableData.sort((a,b) -> Integer.compare((int) a[1], (int)b[1]));
+
+            //     Operation
+
+            int CurrentTime = 0;
+            for(int i=0; i<rowCount; i++){
+                Object[] row = TableData.get(i);
+                int CpuTime = (int) row[1];
+                row[2] = CurrentTime ;
+                row[3] = (int)row[2] + CpuTime;
+                CurrentTime += CpuTime;
+
+            }
+
+            SeaderTableData(TableData);
+            ShowMessageAverageWT("SJF");
+        }
+
+        //        ALgorithm Priority (Ahmed Badawi)
+
+        else if (AlgorithmsList.getSelectedItem().equals("Priority")){
+            //          Add Column "Proriy Process "
+            if(model.getColumnCount() == 4){
+                model.addColumn("Priority.P");
+
+            }
+
+            for(int i=0 ;i < rowCount; i++){
+                int number = i+1;
+
+                String InputPriority = JOptionPane.showInputDialog(this, "Enter Number of Priority process"+number+":","Input Priority Process",JOptionPane.QUESTION_MESSAGE);
+                model.setValueAt(InputPriority, i, 4);
+            }
+
+            List<Object[]> TableData = new ArrayList<>();
+
+            for (int i=0; i<rowCount; i++){
+                Object[] Process = new Object[5];
+                Process[0] = model.getValueAt(i, 0);
+                Process[1] = Integer.parseInt(model.getValueAt(i, 1).toString());//CPU time
+                Process[2] = 0;
+                Process[3] = 0;
+                Process[4] = Integer.parseInt(model.getValueAt(i, 4).toString()) ;//Priority Process
+                TableData.add(Process);
+
+            }
+            //         Sorting
+            TableData.sort((a,b) -> Integer.compare((int) a[4], (int )b[4]));
+
+            //         opertionS
+
+            int currentTime = 0;
+            for (int i=0 ;i <rowCount; i++){
+
+                Object[] Process =TableData.get(i);
+                int CPUTime = (int ) Process[1];
+                Process[2] = currentTime;// Waiting Time
+                Process[3] = (int)Process[2] + CPUTime;//TrunAround Time
+
+                currentTime += CPUTime;
+
+            }
+            SeaderTableData(TableData);// in Algorithm FJS
+            ShowMessageAverageWT("Priority Algorithm");// in Algorithm FCFS
+
+        }
+
+        //        ALgorithm Round Robin  (Mahmoued Hazem)
+
+        else if (AlgorithmsList.getSelectedItem().equals("Round Robin")){
+            String inputQuantam = JOptionPane.showInputDialog(this,
+                "Enter Quantum time for all process ",
+                "Quantum Time ",
+                JOptionPane.QUESTION_MESSAGE);
+            QuantamTimeField.setText(inputQuantam);
+            int QuantamTime = Integer.parseInt(inputQuantam);
+
+            List<Object[]> tableData = new ArrayList<>();
+            int[] backupCpuTime = new int[rowCount];
+
+            for (int i = 0; i < rowCount; i++) {
+                Object[] process = new Object[5];
+                process[0] = model.getValueAt(i, 0);
+                process[1] = Integer.parseInt(model.getValueAt(i, 1).toString());
+                backupCpuTime[i] = Integer.parseInt(model.getValueAt(i, 1).toString());
+                process[2] = 0;
+                process[3] = 0;
+                process[4] = false;
+
+                tableData.add(process);
+            }
+
+            boolean allProcessesIsComplete;
+            int currentTime = 0;
+            do {
+                allProcessesIsComplete = true;
+                for (Object[] process : tableData) {
+                    int CPUTime = (int) process[1];
+
+                    if (CPUTime > 0) {
+                        allProcessesIsComplete = false;
+                        if (CPUTime > QuantamTime) {
+                            currentTime += QuantamTime;
+                            process[1] = (int) process[1] - QuantamTime;
+                        } else {
+                            currentTime += CPUTime;
+                            process[1] = 0;
+                            process[3] = currentTime;
+                            process[2] = (int) process[3] - backupCpuTime[tableData.indexOf(process)];
+
+                            process[4] = true;
+                        }
+                    }
+                }
+            } while (!allProcessesIsComplete);
+
+            for (int i = 0; i < rowCount; i++) {
+                Object[] process = tableData.get(i);
+                model.setValueAt(process[0], i, 0);
+                model.setValueAt(backupCpuTime[i], i, 1);
+                model.setValueAt(process[2], i, 2);
+                model.setValueAt(process[3], i, 3);
+            }
+
+            ShowMessageAverageWT("Round Robin");
+        }
+    }//GEN-LAST:event_RunAlgorithmActionPerformed
+
+    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+         model.setRowCount(0);
+
+            NumberProcess.setText("1");  
+            CPUTime.setText("");        
+    }//GEN-LAST:event_jButton1ActionPerformed
            
     
         
@@ -531,13 +515,13 @@ public class OpeatingSystems extends javax.swing.JFrame {
     private javax.swing.JTextField QuantamTimeField;
     private javax.swing.JButton RunAlgorithm;
     private javax.swing.JTable Table;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel10;
     private javax.swing.JLabel jLabel13;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
-    private javax.swing.JLabel jLabel6;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
