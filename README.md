@@ -86,11 +86,7 @@ This Java project simulates the process scheduling algorithms used in operating 
 This project demonstrates the use of scheduling algorithms with a user-friendly GUI. It provides a great learning tool for understanding how processes are managed in an operating system.
 
 
-
-```
-```
-```
-```
+---
 
 # CPU Scheduling Algorithms
 
