@@ -122,6 +122,8 @@ Average Turnaround Time = 27ms
 - Convoy effect (short processes stuck behind long ones)
 - Not suitable for time-sharing systems
 
+---
+
 ### 2. Shortest Job First (SJF) ⚡
 **The Speed Optimizer**
 
@@ -147,6 +149,8 @@ Average Waiting Time:
 - Potential starvation of longer processes
 - Difficult to implement (future burst prediction needed)
 - Not always practical in real systems
+
+---
 
 ### 3. Round Robin (RR) 🔄
 **The Fair Share Champion**
@@ -175,6 +179,8 @@ Average Waiting Time:
 - Performance heavily depends on quantum size
 - Context switching overhead
 
+---
+
 ### 4. Priority Scheduling 🎯
 **The VIP Manager**
 
@@ -197,6 +203,8 @@ P4      | 3           | 5          | 2
 - Solution: Aging – gradually increase priority of waiting processes
 - Alternative: Combine with Round Robin for same-priority processes
 
+---
+
 ### 5. Multilevel Queue 📚
 **The Class System**
 
@@ -210,6 +218,8 @@ P4      | 3           | 5          | 2
 2. System processes
 3. Interactive processes
 4. Batch processes (Lowest Priority)
+    
+---
 
 ### 6. Multilevel Feedback Queue 🔄📚
 **The Dynamic Classifier**
